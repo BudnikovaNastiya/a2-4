@@ -10,6 +10,7 @@ import ru.netology.web.page.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.web.data.DataHelper.getFirstCardInfo;
 import static ru.netology.web.data.DataHelper.getSecondCardInfo;
 
@@ -33,9 +34,12 @@ class MoneyTransferTest {
         transferPage.moneyTransfer(amount, getFirstCardInfo().getCardNumber());
         val dashboardPageAfterTransfer = new DashboardPage();
         dashboardPageAfterTransfer.getCardBalance(getFirstCardInfo());
-        assertThat(dashboardPageAfterTransfer, containsString(String.valueOf(getFirstCardInfo())));
-        assertThat(dashboardPageAfterTransfer, containsString(String.valueOf(getSecondCardInfo())));
+        int finalBalanceFirstCard = dashboardPage.getCardBalance(getFirstCardInfo());
+        int finalBalanceSecondCard = dashboardPage.getCardBalance(getSecondCardInfo());
+        assertEquals(firstCardBalance - amount, finalBalanceFirstCard);
+        assertEquals(secondCardBalance + amount, finalBalanceSecondCard);
     }
+
     private void assertThat(DashboardPage dashboardPageAfterTransfer, Matcher<String> containsString) {
     }
     @Test
@@ -52,8 +56,10 @@ class MoneyTransferTest {
         transferPage.moneyTransfer(amount, getFirstCardInfo().getCardNumber());
         val dashboardPageAfterTransfer = new DashboardPage();
         dashboardPageAfterTransfer.getCardBalance(getFirstCardInfo());
-        assertThat(dashboardPageAfterTransfer, containsString(String.valueOf(getFirstCardInfo())));
-        assertThat(dashboardPageAfterTransfer, containsString(String.valueOf(getSecondCardInfo())));
+        int finalBalanceFirstCard = dashboardPage.getCardBalance(getFirstCardInfo());
+        int finalBalanceSecondCard = dashboardPage.getCardBalance(getSecondCardInfo());
+        assertEquals(firstCardBalance - amount, finalBalanceFirstCard);
+        assertEquals(secondCardBalance + amount, finalBalanceSecondCard);
     }
 }
 
